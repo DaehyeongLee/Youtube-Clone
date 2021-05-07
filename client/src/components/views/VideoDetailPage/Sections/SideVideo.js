@@ -29,7 +29,7 @@ function SideVideo() {
             </div>
 
             <div style={{ width: '50%' }}>
-                <a href style = {{color : 'gray'}}>
+                <a style = {{color : 'gray'}}>
                     <span style={{ fontSize: '1rem', color: 'black' }}> {video.Title}</span><br />
                     <span>{video.writer.name}</span><br />
                     <span>{video.views} views</span><br />

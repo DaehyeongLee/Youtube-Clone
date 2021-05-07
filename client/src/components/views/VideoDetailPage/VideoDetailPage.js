@@ -4,6 +4,7 @@ import { Row, Col, List, Avatar } from 'antd';
 import Axios from 'axios';
 import SideVideo from './Sections/SideVideo';
 import Subscribe from './Sections/Subscribe';
+import Comment from './Sections/Comment';
 
 function VideoDetailPage(props) {
 
@@ -26,6 +27,10 @@ function VideoDetailPage(props) {
 
     //writer 정보가 있을때만 디테일 render
     if(VideoDetail.writer) {
+
+        //자신이 자신을 구독할 수 없도록
+        const subscribeButton = VideoDetail.writer._id !== localStorage.getItem('userId') && <Subscribe userTo = {VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}/>
+
         return (
             <Row gutter={[16, 16]}>
                 {/*left side */}
@@ -35,7 +40,7 @@ function VideoDetailPage(props) {
                         <video style = {{width: '100%'}} src={`http://localhost:5000/${VideoDetail.filePath}`} controls />
     
                         <List.Item
-                            actions= {[<Subscribe userTo = {VideoDetail.writer._id} userFrom={localStorage.getItem('userId')}/>]}
+                            actions= {[subscribeButton]}
                         >
                             <List.Item.Meta
                                 avatar= {<Avatar src = {VideoDetail.writer.image} />}
@@ -46,6 +51,7 @@ function VideoDetailPage(props) {
                         </List.Item>
     
                         {/* Comments */}
+                        <Comment postId={videoId} />
     
                     </div>
                 </Col>
