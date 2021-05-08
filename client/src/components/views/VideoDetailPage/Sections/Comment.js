@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
 import Axios from 'axios'
 import {useSelector} from 'react-redux';
+import SingleComment from './SingleComment';
 
 function Comment(props) {
 
@@ -23,7 +24,9 @@ function Comment(props) {
         Axios.post('/api/comment/saveComment', variables)
         .then(response=> {
             if(response.data.success) {
-                console.log(response.data.result)
+                props.refreshFunction(response.data.result)
+                setcommentValue("")
+
             } else {
                 alert('Failed save comment')
             }
@@ -37,6 +40,12 @@ function Comment(props) {
             <hr />
 
             {/* Comment Lists */}
+            {props.commentLists && props.commentLists.map((comment, index) => (
+                //Root comment만 보여준다 (대댓글은 보여주지 않는다)
+                (!comment.responseTo && 
+                    <SingleComment refreshFunction={props.refreshFunction} comment = {comment} postId = {props.postId} />
+                )                
+            ))}            
 
             {/* Root Comment Form */}
 

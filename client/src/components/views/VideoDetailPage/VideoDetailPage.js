@@ -12,6 +12,7 @@ function VideoDetailPage(props) {
     const variable = {videoId : videoId}
 
     const [VideoDetail, setVideoDetail] = useState([])
+    const [Comments, setComments] = useState([])
 
     useEffect(() => {
         Axios.post('/api/video/getVideoDetail', variable)
@@ -23,7 +24,22 @@ function VideoDetailPage(props) {
                 alert ('비디오 정보를 가져오는 것에 실패했습니다.')
             }
         })
+
+        Axios.post('/api/comment/getComments', variable)
+        .then(response => {
+            if(response.data.success) {
+                setComments(response.data.comments)
+            } else {
+                alert ('Failed to get comment information')
+            }
+        })
     }, [])    
+
+    //하위 컴포넌트에서 새 댓글 등록시 기존댓글리스트에 붙여주고 리프레시
+    const refreshFunction =(newComment) => {
+        //이를 통해 댓글 등록 시 바로 화면에 업데이트
+        setComments(Comments.concat(newComment))
+    }
 
     //writer 정보가 있을때만 디테일 render
     if(VideoDetail.writer) {
@@ -51,7 +67,7 @@ function VideoDetailPage(props) {
                         </List.Item>
     
                         {/* Comments */}
-                        <Comment postId={videoId} />
+                        <Comment refreshFunction={refreshFunction} commentLists={Comments} postId={videoId} />
     
                     </div>
                 </Col>
