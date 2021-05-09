@@ -33,6 +33,7 @@ function SingleComment(props) {
                 console.log(response.data.result)
                 props.refreshFunction(response.data.result)
                 setCommentValue("")
+                setOpenReply(false)
             } else {
                 alert('Failed save comment')
             }
