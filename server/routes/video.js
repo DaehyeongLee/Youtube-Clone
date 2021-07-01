@@ -138,8 +138,16 @@ router.post('/getSubscriptionVideos', (req, res) => {
                     res.status(200).json({ success: true, videos })
                 })
         })
+})
 
-
+//조회수 카운트
+router.post('/setViews', (req, res) => {
+    Video.findOneAndUpdate({"_id" : req.body.videoId}, { $inc: { views: 1} }) //Video 정보들을 가져온다.
+    .populate('writer') //유저의 모든 정보를 가져오기 위해 populate해줘야한다.
+    .exec((err, result) => {
+        if (err) return res.status(400).send(err)
+        return res.status(200).json({success: true, result})
+    })
 })
 
 

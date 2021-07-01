@@ -6,7 +6,7 @@ import moment from 'moment';
 const {Title} = Typography;
 const {Meta} = Card;
 
-function LandingPage() {
+function LandingPage(props) {
         
     const [Video, setVideo] = useState([])
 
@@ -23,14 +23,26 @@ function LandingPage() {
         })
     }, [])
 
+    const onClickVideo = (item) => {
+        Axios.post('/api/video/setViews', {video : item}).then(response => {
+            if (response.data.success) {
+                //props.history.push(`/video/${item._id}`)
+                //href={`/video/${video._id}`}
+                //onClick = {onClickVideo(video)}
+            } else {
+                alert("조회수 증가에 실패했습니다.")
+            }
+        })
+    }
+
     //Width는 24로 하여 화면 최대 크기일때는 6 (4#), 중간 8 (3#), 최소 24 (1#) 로 col 사이즈 조정
     const renderCards = Video.map((video, index) => {
 
         var minutes = Math.floor(video.duration / 60);
         var seconds = Math.floor((video.duration - minutes * 60));
         
-        return <Col lg={6} md={8} xs={24}>
-            <a href={`/video/${video._id}`} >
+        return <Col lg={6} md={8} xs={24} key = {index}>
+            <a href={`/video/${video._id}`}>
                 <div style={{ position: 'relative' }}>
                     <img style={{width: '100%'}} src={`http://localhost:5000/${video.thumbnail}`} /> 
                     <div className='duration'>

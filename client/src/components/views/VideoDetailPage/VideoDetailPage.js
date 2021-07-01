@@ -34,6 +34,14 @@ function VideoDetailPage(props) {
                 alert ('Failed to get comment information')
             }
         })
+
+        Axios.post('/api/video/setViews', variable).then(response => {
+            if (response.data.success) {
+                //디테일 페이지에 들어올때마다 조회수 증가
+            } else {
+                alert("조회수 증가에 실패했습니다.")
+            }
+        })
     }, [])    
 
     //하위 컴포넌트에서 새 댓글 등록시 기존댓글리스트에 붙여주고 리프레시
